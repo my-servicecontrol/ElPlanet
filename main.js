@@ -1,5 +1,5 @@
 var myApp =
-  "https://script.google.com/macros/s/AKfycbxzRZzqmqa7wYiDReJ9ThXZomulg9a9jNvEH4F1SiIop2qDlW0tBLCl7sBZAhM9vjY/exec";
+  "https://script.google.com/macros/s/AKfycbyqjR2YIBa3BAVGYFjS3welDFrrKlMAfXbQkJ0T5qn1DQm-HmIB6UGZXV0wyjWMU0A/exec";
 var tasks = "1Ysr3R_390EBr5qvQO1JL1Fkd5V5C4Exvn6dtJQOBAgQ";
 var sName = "Autolavado El Planet";
 //var eDate = "Активно до: 18.08.2024";
