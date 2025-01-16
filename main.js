@@ -31,7 +31,7 @@ triggerTabList.forEach((triggerEl) => {
 uStatus.push("в работе");
 
 function loadTasks() {
-  googleQuery(tasks, "0", "D:AH", `SELECT *`);
+  googleQuery(tasks, "0", "D:AN", `SELECT *`);
 }
 function googleQuery(sheet_id, sheet, range, query) {
   google.charts.load("45", { packages: ["corechart"] });
@@ -57,9 +57,23 @@ function googleQuery(sheet_id, sheet, range, query) {
     var data = e.getDataTable();
     tasksTable(data);
     tasksModal(data);
+
+    document.addEventListener("click", function (e) {
+      if (!e.target.classList.contains("send-button")) {
+        return;
+      }
+      //nameE.length = 0;
+      const nameElement = e.target.getAttribute("name");
+      //nameE.push(nameElement);
+      //const str = e.target.innerText;
+      //const match = str.match(/\d+/);
+      //const checkID = match ? parseInt(match[0], 10) : null;
+      var dadata = data.Tf[nameElement - 1].c;
+      editOrder(dadata);
+    });
   }
 }
-
+//var nameE = [];
 function tasksTable(data) {
   $("#tasksTableDiv").html(function () {
     th = `<tr class="border-bottom border-info"><th class="text-secondary">${
@@ -78,6 +92,7 @@ function tasksTable(data) {
     <th class="text-secondary text-truncate" style="max-width: 80px;">${
       data.Sf[26].label
     }</th>
+    <th style="max-width: 30px;"></th>
     <th class="text-secondary">${data.Sf[29].label}</th></tr>`;
     var tr = ``;
     var trr = ``;
@@ -118,10 +133,15 @@ function tasksTable(data) {
             <td class="${textColor} text-start text-truncate" style="min-width: 120px; max-width: 180px;">${
           data.Tf[i].c[25].v
         }</td>
-            <td class="${textColor} text-truncate"><a href="tel:+${
+            <td class="${textColor} text-truncate" style="max-width: 100px;"><a href="tel:+${
           data.Tf[i].c[26].v
         }" ${linkColor}>${data.Tf[i].c[26].v}</a></td>
-            <td class="${textColor} text-end">${
+        <td style="max-width: 30px;"
+        <button class="send-button" name="${
+          i + 1
+        }" id="sendButton"><i class="fas fa-paper-plane"></i></button>
+        </td>
+          <td class="${textColor} text-end">${
           data.Tf[i].c[29].v + " " + data.Tf[i].c[30].v
         }</td></tr>`;
       }
@@ -148,9 +168,14 @@ function tasksTable(data) {
             <td class="text-start text-secondary text-truncate" style="min-width: 120px; max-width: 180px;">${
               data.Tf[i].c[25].v
             }</td>
-            <td class="text-secondary text-truncate"><a href="tel:+${
+            <td class="text-secondary text-truncate" style="max-width: 100px;"><a href="tel:+${
               data.Tf[i].c[26].v
             }" class="link-secondary">${data.Tf[i].c[26].v}</a></td>
+        <td style="max-width: 30px;"
+        <button class="send-button" name="${
+          i + 1
+        }" id="sendButton"><i class="fas fa-paper-plane"></i></button>
+        </td>
             <td class="text-end text-secondary">${
               data.Tf[i].c[29].v + " " + data.Tf[i].c[30].v
             }</td></tr>`;
@@ -427,6 +452,92 @@ function newOrder() {
   $("#commonModal .modal-footer").html(buttons);
   $("#commonModal").modal("show");
 }
+
+function editOrder(dadata) {
+  var title = `<div class="row fs-6 fst-italic text-nowrap"><div class="col-2">${dadata[3].v}</div><div class="col-6 text-end">${sName}</div><div class="col-4">${dadata[0].f} - ${dadata[1].f}</div></div>`;
+  var buttons = `<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+               <button type="button" class="btn btn-success" onclick="addCheck()">Зберегти</button>`;
+  $("#commonModal .modal-header .modal-title").html(title);
+  $("#commonModal .modal-body").html(function () {
+    return `<div class="row">
+  <div class="col-3">
+  <select id="cash" name="cash" class="form-select badge text-bg-success" type="text" value="" onchange="">
+  <option selected>готів.</option><option>безгот.</option></select>
+  </div>
+  <div class="col-3">
+  <select id="currency" name="currency" class="form-select badge text-bg-primary" type="text" value="" onchange="">
+  <option selected>грн.</option><option>$</option><option>€</option></select>
+  </div>
+  <div class="col-2">
+  <input id="percentclient" name="client" class="form-control form-control-sm" type="text" placeholder="%" value="" onchange="">
+  </div>
+  <div class="col-4">
+  <select id="statusd" name="statusd" class="form-select badge text-bg-warning" type="text" value="" onchange="">
+  <option selected>пропозиція</option><option>в роботі</option><option>виконано</option><option>в архів</option></select>
+  </div></div>
+${dadata[13].v}<br>
+${dadata[14].v} ${dadata[15].v} ${dadata[16].v} ${dadata[17].v}<br>
+${dadata[18].v}<br>
+<label for="client" class="form-label">Пробіг</label>
+${dadata[12].v}<br>
+<label for="client" class="form-label">Клієнт</label>
+${dadata[25].v} ${dadata[26].v}<br>
+  <div class="table-container">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>№</th>
+          <th>Регламент</th>
+          <th>Кіл-ть</th>
+          <th>Ціна послуга</th>
+          <th>Ціна товар</th>
+          <th>Кіл-ть</th>
+          <th>Артикул</th>
+          <th>Собівартість</th>
+          <th>Кіл-ть</th>
+          <th>Виконавець</th>
+          <th>Норма з/п</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>`;
+  });
+
+  const data = dadata[36].v;
+  const rows = data.split(",");
+  const tableBody = document.getElementById("table-body");
+
+  rows.forEach((row, index) => {
+    const columns = row.split("|");
+    const tr = document.createElement("tr");
+
+    const numberCell = document.createElement("td");
+    numberCell.textContent = index + 1; // Установка номера строки
+    tr.appendChild(numberCell);
+
+    columns.forEach((column) => {
+      const td = document.createElement("td");
+      const input = document.createElement("input");
+      input.id = "value";
+      input.name = "value";
+      input.className = "form-control form-control-sm";
+      input.type = "text";
+      input.placeholder = "";
+      input.value = column || "";
+      input.onchange = function () {
+        /* обработчик изменений */
+      };
+      td.appendChild(input);
+      tr.appendChild(td);
+    });
+
+    tableBody.appendChild(tr);
+  });
+  $("#commonModal .modal-footer").html(buttons);
+  $("#commonModal").modal("show");
+}
+
 var numCheck = ``;
 function addCheck() {
   var nomer = $("#num").val();
