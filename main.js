@@ -69,7 +69,7 @@ function googleQuery(sheet_id, sheet, range, query) {
       //const match = str.match(/\d+/);
       //const checkID = match ? parseInt(match[0], 10) : null;
       var dadata = data.Tf[nameElement - 1].c;
-      editOrder(dadata);
+      //editOrder(dadata);
     });
   }
 }
