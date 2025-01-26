@@ -420,16 +420,16 @@ function newOrder() {
     <div class="row">
     <div class="col-6">
     <form class="form-floating">
-    <input class="form-control" id="num" placeholder="Держ. номер авто" value="" onchange="option()" list="character">
-    <label for="num">Держ. номер авто</label>
+    <input class="form-control" id="num" placeholder="Гос. номер авто" value="" onchange="option()" list="character">
+    <label for="num">Гос. номер авто</label>
     </form>
     <datalist id="character">${opcNum}</datalist>
     </div>
     
     <div class="col-6 ms-auto">
     <form class="form-floating">
-    <input type="datetime-local" id="datetime-local" class="form-control" placeholder="Дата та час візиту" min="${vYear}-${vMonth}-${vDay} ${vHour}:${vMinutes}" value="${vYear}-${vMonth}-${vDay} ${vHour}:${vMinutes}" onchange="">
-    <label for="datetime-local" class="form-label">Дата та час візиту</label>
+    <input type="datetime-local" id="datetime-local" class="form-control" placeholder="Время визита" min="${vYear}-${vMonth}-${vDay} ${vHour}:${vMinutes}" value="${vYear}-${vMonth}-${vDay} ${vHour}:${vMinutes}" onchange="">
+    <label for="datetime-local" class="form-label">Время визита</label>
     </form>
     </div>
     </div>
@@ -445,29 +445,29 @@ function newOrder() {
 </div>
 <div class="row text-bg-light">
 <div class="col-6">
-<label for="color" class="form-label">Колір</label>
+<label for="color" class="form-label">Цвет</label>
 <input id="color" name="color" class="form-control form-control-sm" type="text" value="" onchange="" list="character3">
 <datalist id="character3">${opcColor}</datalist></div>
 <div class="col-6 ms-auto">
-<label for="year" class="form-label">Рік</label>
+<label for="year" class="form-label">Год</label>
 <input id="year" name="year" class="form-control form-control-sm" type="text" value="" onchange="" list="character4">
 <datalist id="character4">${opcYear}</datalist></div></div>
 <div class="row text-bg-light p-2">
 <div class="col-6">
-<label for="vin" class="form-label">Vin-код автомобіля</label>
+<label for="vin" class="form-label">Vin-код</label>
 <input id="vin" name="vin" class="form-control form-control-sm" type="text" value="" onchange="" list="character5">
 <datalist id="character5"></datalist></div>
 <div class="col-6 ms-auto">
-<label for="mileage" class="form-label">Пробіг</label>
+<label for="mileage" class="form-label">Пробег</label>
 <input id="mileage" name="mileage" class="form-control form-control-sm" type="text" value="" onchange="" list="character6">
 <datalist id="character6"></datalist></div></div>
 <div class="row">
 <div class="col-6">
-<label for="client" class="form-label">Ім'я клієнта</label>
+<label for="client" class="form-label">Клиент</label>
 <input id="client" name="client" class="form-control form-control-sm" type="text" value="" onchange="" list="character7">
 <datalist id="character7">${opcClient}</datalist></div>
 <div class="col-6 ms-auto">
-<label for="phone" class="form-label">Телефон клієнта</label>
+<label for="phone" class="form-label">Тел. клиента</label>
 <input id="phone" name="phone" class="form-control form-control-sm" type="text" value="" onchange="" list="character8">
 <datalist id="character8"></datalist></div></div>`;
   });
