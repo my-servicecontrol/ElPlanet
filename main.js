@@ -177,7 +177,7 @@ function tasksTable(data) {
 var fil = [];
 function myFunction() {
   fil.length = 0;
-  var input, filter, table, tr, td, td1, td2, td3, td4, td5, td6, i;
+  var input, filter, table, tr, td, td1, td2, td3, td4, td5, td6, td7, i;
   input = document.getElementById("myInput");
   filter = input.value.toUpperCase();
   table = document.getElementById("myTable");
@@ -194,6 +194,7 @@ function myFunction() {
     td4 = tr[i].getElementsByTagName("td")[4];
     td5 = tr[i].getElementsByTagName("td")[5];
     td6 = tr[i].getElementsByTagName("td")[6];
+    td7 = tr[i].getElementsByTagName("td")[7];
     if (td) {
       if (
         td.innerHTML.toUpperCase().indexOf(filter) > -1 ||
@@ -202,7 +203,8 @@ function myFunction() {
         td3.innerHTML.toUpperCase().indexOf(filter) > -1 ||
         td4.innerHTML.toUpperCase().indexOf(filter) > -1 ||
         td5.innerHTML.toUpperCase().indexOf(filter) > -1 ||
-        td6.innerHTML.toUpperCase().indexOf(filter) > -1
+        td6.innerHTML.toUpperCase().indexOf(filter) > -1 ||
+        td7.innerHTML.toUpperCase().indexOf(filter) > -1
       ) {
         tr[i].style.display = "";
       } else {
@@ -222,10 +224,12 @@ function tasksModal(data) {
   autoClient.length = 0;
   autoPhone.length = 0;
   autoAllNum.length = 0;
+  autoAllmc.length = 0;
   for (var i = 0; i < data.Tf.length; i++) {
     var swap = 0;
     var str = data.Tf[i].c[13].v;
     autoAllNum.push(data.Tf[i].c[13].v);
+    autoAllmc.push(data.Tf[i].c[15].v + data.Tf[i].c[25].v);
     for (var j = i; j < data.Tf.length; j++) {
       if (data.Tf[j].c[13].v == str) {
         swap++;
@@ -354,13 +358,57 @@ var autoNum = [],
   autoMileage = [],
   autoClient = [],
   autoPhone = [],
-  autoAllNum = [];
+  autoAllNum = [],
+  autoAllmc = [];
 function option() {
   var num = $("#num").val();
+  var model = $("#model").val();
+  var client = $("#client").val();
+  function convertToLatin(str) {
+    const cyrillicToLatinMap = {
+      А: "A",
+      В: "B",
+      Е: "E",
+      И: "I",
+      К: "K",
+      М: "M",
+      Н: "H",
+      О: "O",
+      Р: "P",
+      С: "C",
+      Т: "T",
+      У: "Y",
+      Х: "X",
+      а: "A",
+      в: "B",
+      е: "E",
+      и: "I",
+      к: "K",
+      м: "M",
+      н: "H",
+      о: "O",
+      р: "P",
+      с: "C",
+      т: "T",
+      у: "Y",
+      х: "X",
+    };
+    return str
+      .replace(/[А-Яа-я]/g, (char) => cyrillicToLatinMap[char] || char)
+      .toUpperCase();
+  }
+  num = convertToLatin(num);
+  $("#num").val(num);
+
+  if (num != "") {
+    var allNum = autoAllNum.filter((value) => value === num).length;
+    $("#allnum").html(`${allNum + 1} -й визит`);
+  } else {
+    var allmc = autoAllmc.filter((value) => value == model + client).length;
+    $("#allnum").html(`${allmc + 1} -й визит`);
+  }
   for (i = 0; i < autoNum.length; i++) {
-    if (autoNum[i] == num) {
-      var allNum = autoAllNum.filter((value) => value === num).length;
-      $("#allnum").html(`${allNum + 1} -й візит`);
+    if (autoNum[i] == num && client == "") {
       $("#make").val(autoMake[i]);
       $("#model").val(autoModel[i]);
       $("#color").val(autoColor[i]);
@@ -371,7 +419,6 @@ function option() {
       $("#phone").val(autoPhone[i]);
       break;
     }
-    $("#allnum").html(`1-й візит`);
   }
 }
 var tempMake = [],
@@ -464,7 +511,7 @@ function newOrder() {
 <div class="row">
 <div class="col-6">
 <label for="client" class="form-label">Клиент</label>
-<input id="client" name="client" class="form-control form-control-sm" type="text" value="" onchange="" list="character7">
+<input id="client" name="client" class="form-control form-control-sm" type="text" value="" onchange="option()" list="character7">
 <datalist id="character7">${opcClient}</datalist></div>
 <div class="col-6 ms-auto">
 <label for="phone" class="form-label">Тел. клиента</label>
