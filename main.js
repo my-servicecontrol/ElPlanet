@@ -1,5 +1,5 @@
 var myApp =
-  "https://script.google.com/macros/s/AKfycbwIEDRde678wokMpZoAn3vhAtalFRXhwcU2jmgYXH7jOVEDaYq5DOoDK7ME7ftw3Ah1/exec";
+  "https://script.google.com/macros/s/AKfycbzgTOch8_TudgUZc9dYj9pDuqdLX31C-iG4fFd_G8Sts-d9I8s20P147D7M3jqQRlRc/exec";
 var tasks = "1Ysr3R_390EBr5qvQO1JL1Fkd5V5C4Exvn6dtJQOBAgQ";
 var sName = "Autolavado El Planet";
 //var eDate = "Активно до: 18.08.2024";
@@ -8,19 +8,24 @@ $("#offcanvasNavbarLabel").html(sName);
 $(document).ready(function () {
   loadTasks();
 });
-var uStatus = [];
+var uStatus = [],
+  tStatus = [];
 const triggerTabList = document.querySelectorAll("#nav-tab button");
 triggerTabList.forEach((triggerEl) => {
   triggerEl.addEventListener("click", (event) => {
     uStatus.length = 0;
+    tStatus.length = 0;
     if (triggerEl.innerText == "В работе") {
       uStatus.push("в работе");
+      tStatus.push("en proceso");
     }
     if (triggerEl.innerText == "Сделано") {
       uStatus.push("сделано");
+      tStatus.push("hecho");
     }
     if (triggerEl.innerText == "В архив") {
       uStatus.push("в архив");
+      tStatus.push("borrar");
     }
     $("#myTable tbody").html(
       `<span class="spinner-grow spinner-grow-sm text-success" role="status" aria-hidden="true"></span>`
@@ -29,6 +34,7 @@ triggerTabList.forEach((triggerEl) => {
   });
 });
 uStatus.push("в работе");
+tStatus.push("en proceso");
 
 function loadTasks() {
   googleQuery(tasks, "0", "D:AN", `SELECT *`);
@@ -92,17 +98,23 @@ function tasksTable(data) {
     var trr = ``;
     for (i = data.Tf.length - 1; i >= 0; i--) {
       var colorw =
-        data.Tf[i].c[4].v == "в работе"
+        data.Tf[i].c[4].v == "в работе" || data.Tf[i].c[4].v == "en proceso"
           ? `class="table-success" title="в работе"`
           : ``;
 
-      if (data.Tf[i].c[4].v == "закупка") {
+      if (data.Tf[i].c[4].v == "закупка" || data.Tf[i].c[4].v == "compra") {
         var colorp = `class="table-secondary" title="закупка"`;
       }
-      if (data.Tf[i].c[4].v == "весь документ") {
+      if (
+        data.Tf[i].c[4].v == "весь документ" ||
+        data.Tf[i].c[4].v == "vista completa"
+      ) {
         var colorp = `class="table-light" title="весь документ"`;
       }
-      if (data.Tf[i].c[4].v == "предложение") {
+      if (
+        data.Tf[i].c[4].v == "предложение" ||
+        data.Tf[i].c[4].v == "presupuesto"
+      ) {
         var colorp = `title="предложение"`;
       }
 
@@ -110,7 +122,10 @@ function tasksTable(data) {
       var linkColor =
         uStatus == "в архив" ? `class="link-secondary"` : `class="link-dark"`;
 
-      if (data.Tf[i].c[4].v == uStatus && data.Tf[i].c[24].v == sName) {
+      if (
+        (data.Tf[i].c[4].v == uStatus || data.Tf[i].c[4].v == tStatus) &&
+        data.Tf[i].c[24].v == sName
+      ) {
         tr += `<tr ${colorw}>
         <td><a target="_blank" href="${data.Tf[i].c[2].v}" ${linkColor}>${
           data.Tf[i].c[3].v
@@ -140,7 +155,10 @@ function tasksTable(data) {
       if (
         (data.Tf[i].c[4].v == "предложение" ||
           data.Tf[i].c[4].v == "закупка" ||
-          data.Tf[i].c[4].v == "весь документ") &&
+          data.Tf[i].c[4].v == "весь документ" ||
+          data.Tf[i].c[4].v == "presupuesto" ||
+          data.Tf[i].c[4].v == "compra" ||
+          data.Tf[i].c[4].v == "vista completa") &&
         uStatus == "в работе" &&
         data.Tf[i].c[24].v == sName
       ) {
