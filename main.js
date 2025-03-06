@@ -1,5 +1,5 @@
 var myApp =
-  "https://script.google.com/macros/s/AKfycbzgTOch8_TudgUZc9dYj9pDuqdLX31C-iG4fFd_G8Sts-d9I8s20P147D7M3jqQRlRc/exec";
+  "https://script.google.com/macros/s/AKfycbwJI0cnlNzUHFCD9fvOvp3nz3SgSWkv6-McqR97mkkqb_TZhZEBdnNswfELLjKiMB7N/exec";
 var tasks = "1Ysr3R_390EBr5qvQO1JL1Fkd5V5C4Exvn6dtJQOBAgQ";
 var sName = "Autolavado El Planet";
 //var eDate = "Активно до: 18.08.2024";
@@ -633,20 +633,20 @@ function addCheck() {
 }
 
 function addReportModal() {
-  var title = `Створюємо звіт`;
+  var title = `Создаем отчёт`;
   var buttons = `<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
             	   <button type="button" class="btn btn-success" onclick="addReport()">Создать</button>`;
   $("#commonReport .modal-header .modal-title").html(title);
   $("#commonReport .modal-body").html(function () {
-    return `<label for="typeReport" class="form-label">Тип звіту</label>
+    return `<label for="typeReport" class="form-label">Тип отчёта</label>
 <select id="typeReport" name="typeReport" class="form-select" type="text" value="" onchange="addInputClient()" list="characterR">
-<option selected>За виконаними замовленнями</option><option>За проданими товарами</option><option>По клієнту</option></select>
+<option selected>По выполненным заказам</option><option>Финансовый (краткий)</option><option>По проданным товарам</option><option>По клиенту</option></select>
 <br><div id="addInput"></div><br>
 <div class="row"><div class="col">
-<label for="sdate" class="form-label">Дата початку</label>
+<label for="sdate" class="form-label">Дата начала</label>
 <input id="sdate" name="sdate" class="form-control" type="date" placeholder="" onchange="">
 </div><div class="col">
-<label for="pdate" class="form-label">Дата кінець</label>
+<label for="pdate" class="form-label">Дата конец</label>
 <input id="pdate" name="pdate" class="form-control" type="date" placeholder="" onchange="">
 </div></div>`;
   });
@@ -659,7 +659,7 @@ function addInputClient() {
 <input id="client" name="client" class="form-control form-control-sm" type="text" value="" onchange="" list="character7">
 <datalist id="character7">${opcClient}</datalist></div>`;
   var typeReport = $("#typeReport").val();
-  if (typeReport == "По клієнту") {
+  if (typeReport == "По клиенту") {
     $("#addInput").html(inClient);
   } else {
     $("#addInput").html("");
@@ -670,13 +670,16 @@ var action = [];
 function addReport() {
   var typeReport = $("#typeReport").val();
   action.length = 0;
-  if (typeReport == "За виконаними замовленнями") {
+  if (typeReport == "По выполненным заказам") {
     action.push("reportVal");
   }
-  if (typeReport == "За проданими товарами") {
+  if (typeReport == "Финансовый (краткий)") {
+    action.push("reportFin");
+  }
+  if (typeReport == "По проданным товарам") {
     action.push("reportGoods");
   }
-  if (typeReport == "По клієнту") {
+  if (typeReport == "По клиенту") {
     action.push("reportClient");
   }
   var sdate = $("#sdate").val();
@@ -688,7 +691,7 @@ function addReport() {
   )}&client=${encodeURIComponent(client)}&action=${encodeURIComponent(action)}`;
   $("#commonReport .modal-body, .modal-footer").html("");
   $("#commonReport .alert-area").html(
-    `<div class="alert alert-success" role="alert"><div class="spinner-border text-success" role="status"></div> В процесі....</div>`
+    `<div class="alert alert-success" role="alert"><div class="spinner-border text-success" role="status"></div> В процессе....</div>`
   );
   var xhr = new XMLHttpRequest();
   xhr.open("POST", myApp, true);
@@ -697,7 +700,7 @@ function addReport() {
     if (xhr.readyState == 4 && xhr.status == 200) {
       if (xhr.response == "nofind") {
         $("#commonReport .alert-area").html(
-          `<div class="alert alert-warning" role="alert">Нічого не знайдено!<br>Виберіть іншу дату.</div>`
+          `<div class="alert alert-warning" role="alert">Нічого не знайдено!<br>Выберите другую дату.</div>`
         );
         setTimeout(() => {
           $(".alert").alert("close");
