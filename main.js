@@ -1,5 +1,5 @@
 var myApp =
-  "https://script.google.com/macros/s/AKfycbwJI0cnlNzUHFCD9fvOvp3nz3SgSWkv6-McqR97mkkqb_TZhZEBdnNswfELLjKiMB7N/exec";
+  "https://script.google.com/macros/s/AKfycbzFYvBWRSvXDPtbfwa6GtFuALDGqJUrjC-IUkOLSVwQCk2DVphbOHxyhCsJGhKwf7hL/exec";
 var tasks = "1Ysr3R_390EBr5qvQO1JL1Fkd5V5C4Exvn6dtJQOBAgQ";
 var sName = "Autolavado El Planet";
 //var eDate = "Активно до: 18.08.2024";
@@ -22,6 +22,9 @@ triggerTabList.forEach((triggerEl) => {
     if (triggerEl.innerText == "Сделано") {
       uStatus.push("сделано");
       tStatus.push("hecho");
+    }
+    if (triggerEl.innerText == "Factura") {
+      uStatus.push("factura");
     }
     if (triggerEl.innerText == "В архив") {
       uStatus.push("в архив");
@@ -466,6 +469,13 @@ var opcNum = [],
   opcYear = [],
   opcClient = [];
 function newOrder() {
+  const currentTime = moment().tz("Europe/Madrid");
+  const vHour = currentTime.format("HH");
+  const vMinutes = currentTime.format("mm");
+  const vYear = currentTime.format("YYYY");
+  const vMonth = currentTime.format("MM");
+  const vDay = currentTime.format("DD");
+
   var title = `Создаем новый визит в сервис`;
   var buttons = `<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
             	   <button type="button" class="btn btn-success" onclick="addCheck()">Создать</button>`;
@@ -486,7 +496,7 @@ function newOrder() {
     
     <div class="col-6 ms-auto">
     <form class="form-floating">
-    <input type="datetime-local" id="datetime-local" class="form-control" placeholder="Время визита" min="" value="" onchange="">
+    <input type="datetime-local" id="datetime-local" class="form-control" placeholder="Время визита" min="${vYear}-${vMonth}-${vDay} ${vHour}:${vMinutes}" value="${vYear}-${vMonth}-${vDay} ${vHour}:${vMinutes}" onchange="">
     <label for="datetime-local" class="form-label">Время визита</label>
     </form>
     </div>
@@ -633,7 +643,7 @@ function addReportModal() {
   $("#commonReport .modal-body").html(function () {
     return `<label for="typeReport" class="form-label">Тип отчёта</label>
 <select id="typeReport" name="typeReport" class="form-select" type="text" value="" onchange="addInputClient()" list="characterR">
-<option selected>По выполненным заказам</option><option>Финансовый (краткий)</option><option>По проданным товарам</option><option>По клиенту</option></select>
+<option selected>По выполненным заказам</option><option>По выданным фактурам</option><option>Финансовый (краткий)</option><option>По проданным товарам</option><option>По клиенту</option></select>
 <br><div id="addInput"></div><br>
 <div class="row"><div class="col">
 <label for="sdate" class="form-label">Дата начала</label>
@@ -665,6 +675,9 @@ function addReport() {
   action.length = 0;
   if (typeReport == "По выполненным заказам") {
     action.push("reportVal");
+  }
+  if (typeReport == "По выданным фактурам") {
+    action.push("reportFac");
   }
   if (typeReport == "Финансовый (краткий)") {
     action.push("reportFin");
