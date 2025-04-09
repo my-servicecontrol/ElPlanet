@@ -1,5 +1,5 @@
 var myApp =
-  "https://script.google.com/macros/s/AKfycbwocgWqx8qUspasEYMb0iK5mlUuhRPDmtYsQ-7hvzc2b1J0bNwoVtRB4bOI0XYMW2KX/exec";
+  "https://script.google.com/macros/s/AKfycbyxGrDW77EpRJC1vvwaNgH_deEiQqnRqcYT8UR1N8torY5_2GEjUX7USyUeyPx3txMI/exec";
 var tasks = "1Ysr3R_390EBr5qvQO1JL1Fkd5V5C4Exvn6dtJQOBAgQ";
 var sName = "Autolavado El Planet";
 //var eDate = "Активно до: 18.08.2024";
@@ -269,6 +269,7 @@ function tasksModal(data) {
     }
   }
   numCheck = data.Tf.length + 1;
+  numFactu = data.Tf.filter((row) => row.c[4]?.v === "factura").length + 1;
   opcNum.length = 0;
   opcMake.length = 0;
   opcModel.length = 0;
@@ -586,6 +587,7 @@ function editOrder(dadata) {
 }
 
 var numCheck = ``;
+var numFactu = ``;
 function addCheck() {
   var nomer = $("#num").val();
   var visitnum =
@@ -602,17 +604,19 @@ function addCheck() {
   var action = "addCheck";
   var body = `numCheck=${encodeURIComponent(
     numCheck
-  )}&nomer=${encodeURIComponent(nomer)}&visitnum=${encodeURIComponent(
-    visitnum
-  )}&record=${encodeURIComponent(record)}&make=${encodeURIComponent(
-    make
-  )}&model=${encodeURIComponent(model)}&color=${encodeURIComponent(
-    color
-  )}&year=${encodeURIComponent(year)}&vin=${encodeURIComponent(
-    vin
-  )}&mileage=${encodeURIComponent(mileage)}&client=${encodeURIComponent(
-    client
-  )}&phone=${encodeURIComponent(phone)}&action=${encodeURIComponent(action)}`;
+  )}&numFactu=${encodeURIComponent(numFactu)}&nomer=${encodeURIComponent(
+    nomer
+  )}&visitnum=${encodeURIComponent(visitnum)}&record=${encodeURIComponent(
+    record
+  )}&make=${encodeURIComponent(make)}&model=${encodeURIComponent(
+    model
+  )}&color=${encodeURIComponent(color)}&year=${encodeURIComponent(
+    year
+  )}&vin=${encodeURIComponent(vin)}&mileage=${encodeURIComponent(
+    mileage
+  )}&client=${encodeURIComponent(client)}&phone=${encodeURIComponent(
+    phone
+  )}&action=${encodeURIComponent(action)}`;
   $("#commonModal .modal-body, .modal-footer").html("");
   $("#commonModal .alert-area").html(
     `<div class="alert alert-success" role="alert"><div class="spinner-border text-success" role="status"></div> В процесі....</div>`
