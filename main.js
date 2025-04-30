@@ -1,5 +1,5 @@
 var myApp =
-  "https://script.google.com/macros/s/AKfycbyxGrDW77EpRJC1vvwaNgH_deEiQqnRqcYT8UR1N8torY5_2GEjUX7USyUeyPx3txMI/exec";
+  "https://script.google.com/macros/s/AKfycbzTgZUSp6n0ZGDz2XGojkYALUPYds7HcQdt9GSwkfl6hMSR4Wlrz96DdDnkPFvq8VZS/exec";
 var tasks = "1Ysr3R_390EBr5qvQO1JL1Fkd5V5C4Exvn6dtJQOBAgQ";
 var sName = "Autolavado El Planet";
 //var eDate = "Активно до: 18.08.2024";
@@ -563,7 +563,7 @@ function editOrder(dadata) {
   });
 
   const data = dadata[36].v == undefined ? "заказ пуст" : dadata[36].v;
-  const rows = data.split(",");
+  const rows = data.split("--");
   const tableBody = document.getElementById("table-body");
 
   rows.forEach((row, index) => {
